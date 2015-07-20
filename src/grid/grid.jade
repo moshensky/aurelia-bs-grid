@@ -1,0 +1,41 @@
+//
+   Created by moshensky on 7/20/15.
+template
+  require(from="../pager/pager")
+  div
+    div.grid-container(show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)")
+    // Content table
+    div.grid-content-container
+    table.table.table-hover.table-striped.table-responsive.selectable(show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)")
+      thead
+        tr(if.bind="showColumnFilters")
+          th(repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }")
+            input.form-control(if.bind="$column.showFilter", value.bind="$column.filterValue", input.delegate="$parent.updateFilters()")
+        tr(role="button")
+          th(repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }")
+            a(if.bind="$column.nosort == false && $parent.sortable", click.trigger="$parent.sortChanged($column.field)") ${ $column.heading }
+            span(if.bind="$column.nosort == true || !$parent.sortable") ${ $column.heading }
+            svg(if.bind="$parent.sorting[$column.field] === 'desc'" height="8" width="10")
+              polygon(class="grid-sort-arrow" points="0,0 8,0 4,8")
+            svg(if.bind="$parent.sorting[$column.field] === 'asc'" height="8" width="10")
+              polygon(class="grid-sort-arrow" points="0,8 8,8 4,0")
+
+      tbody
+        tr(role="button", click.delegate="$parent.select($item)")
+
+    // Footer div
+    div(class="grid-footer-container")
+      pager(style="float: left", num-to-show.bind="pagerSize", pager.ref="pager", on-page-changed.call="pageChanged($event)", show-first-last-buttons.bind="showFirstLastButtons", show-jump-buttons.bind="showJumpButtons")
+      div(style="float: left;margin-left: 20px" class="form-inline")
+        div.form-control-group
+          select.form-control(value.bind="pageSize")
+            option(value.bind="size", repeat.for="size of pageSizes") ${ size === '*' ? 'All' : size }
+          span items per page
+      span.grid-summary Showing ${ firstVisibleItem } - ${ lastVisibleItem } of ${ count } items
+
+    // No rows message
+    div.alert.alert-warning(if.bind="showNoRowsMessage && count === 0") ${ noRowsMessage }
+    div.grid-overlay(if.bind="loading")
+    div.progress.grid-progress-indicator(if.bind="loading")
+      div.progress-bar.progress-bar-striped.active(role="progressbar", style="width: 100%")
+        span ${ loadingMessage }

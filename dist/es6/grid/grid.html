@@ -1,63 +1,50 @@
+
+<!--Created by moshensky on 7/20/15.
+-->
 <template>
   <require from="../pager/pager"></require>
   <div>
-    <div class="grid-container" show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)">
-      <!-- Header table -->
-      <table class="table table-hover table-striped table-responsive grid-header-table">
-        <thead>
+    <div show.bind="!showNoRowsMessage || (showNoRowsMessage &amp;&amp; count &gt; 0)" class="grid-container"></div>
+    <!-- Content table-->
+    <div class="grid-content-container"></div>
+    <table show.bind="!showNoRowsMessage || (showNoRowsMessage &amp;&amp; count &gt; 0)" class="table table-hover table-striped table-responsive selectable">
+      <thead>
         <tr if.bind="showColumnFilters">
           <th repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }">
-            <input if.bind="$column.showFilter" class="form-control" value.bind="$column.filterValue"
-                   input.delegate="$parent.updateFilters()"></input>
+            <input if.bind="$column.showFilter" value.bind="$column.filterValue" input.delegate="$parent.updateFilters()" class="form-control"/>
           </th>
         </tr>
         <tr role="button">
-          <th repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }">
-            <a if.bind="$column.nosort == false && $parent.sortable" click.trigger="$parent.sortChanged($column.field)">${
-              $column.heading }</a>
-            <span if.bind="$column.nosort == true || !$parent.sortable">${ $column.heading }</span>
+          <th repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }"><a if.bind="$column.nosort == false &amp;&amp; $parent.sortable" click.trigger="$parent.sortChanged($column.field)">${ $column.heading }</a><span if.bind="$column.nosort == true || !$parent.sortable">${ $column.heading }</span>
             <svg if.bind="$parent.sorting[$column.field] === 'desc'" height="8" width="10">
-              <polygon class="grid-sort-arrow" points="0,0 8,0 4,8"/>
+              <polygon points="0,0 8,0 4,8" class="grid-sort-arrow"></polygon>
             </svg>
             <svg if.bind="$parent.sorting[$column.field] === 'asc'" height="8" width="10">
-              <polygon class="grid-sort-arrow" points="0,8 8,8 4,0"/>
+              <polygon points="0,8 8,8 4,0" class="grid-sort-arrow"></polygon>
             </svg>
           </th>
         </tr>
-        </thead>
-      </table>
-      <!-- Content table -->
-      <div class="grid-content-container">
-        <table class="table table-hover table-striped table-responsive selectable"
-               show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)">
-          <tbody>
-          <tr role="button" click.delegate="$parent.select($item)">
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <!-- Footer div -->
-      <div class="grid-footer-container">
-        <pager num-to-show.bind="pagerSize" pager.ref="pager" on-page-changed.call="pageChanged($event)"
-               show-first-last-buttons.bind="showFirstLastButtons" show-jump-buttons.bind="showJumpButtons"></pager>
-        <div class="form-inline">
-          <div class="form-control-group">
-            <select class="form-control" value.bind="pageSize">
-              <option value.bind="size" repeat.for="size of pageSizes">${ size === '*' ? 'All' : size }</option>
-            </select>
-            <span> items per page</span>
-          </div>
+      </thead>
+      <tbody>
+        <tr role="button" click.delegate="$parent.select($item)"></tr>
+      </tbody>
+    </table>
+    <!-- Footer div-->
+    <div class="grid-footer-container">
+      <pager style="float: left" num-to-show.bind="pagerSize" pager.ref="pager" on-page-changed.call="pageChanged($event)" show-first-last-buttons.bind="showFirstLastButtons" show-jump-buttons.bind="showJumpButtons"></pager>
+      <div style="float: left;margin-left: 20px" class="form-inline">
+        <div class="form-control-group">
+          <select value.bind="pageSize" class="form-control">
+            <option value.bind="size" repeat.for="size of pageSizes">${ size === '*' ? 'All' : size }</option>
+          </select><span>items per page</span>
         </div>
-        <span class="grid-summary">Showing ${ firstVisibleItem } - ${ lastVisibleItem } of ${ count } items</span>
-      </div>
+      </div><span class="grid-summary">Showing ${ firstVisibleItem } - ${ lastVisibleItem } of ${ count } items</span>
     </div>
-    <!-- No rows message -->
-    <div if.bind="showNoRowsMessage && count === 0" class="alert alert-warning">${ noRowsMessage }</div>
-    <div class="grid-overlay" if.bind="loading"></div>
+    <!-- No rows message-->
+    <div if.bind="showNoRowsMessage &amp;&amp; count === 0" class="alert alert-warning">${ noRowsMessage }</div>
+    <div if.bind="loading" class="grid-overlay"></div>
     <div if.bind="loading" class="progress grid-progress-indicator">
-      <div class="progress-bar progress-bar-striped active" role="progressbar">
-        <span>${ loadingMessage }</span>
-      </div>
+      <div role="progressbar" style="width: 100%" class="progress-bar progress-bar-striped active"><span>${ loadingMessage }</span></div>
     </div>
   </div>
 </template>

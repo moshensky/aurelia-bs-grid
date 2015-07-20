@@ -4,6 +4,7 @@ var to5 = require('gulp-babel');
 var paths = require('../paths');
 var compilerOptions = require('../babel-options');
 var assign = Object.assign || require('object.assign');
+var jade = require('gulp-jade');
 var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('build-css-es6', function () {
@@ -90,9 +91,18 @@ gulp.task('copy-demo-css', function () {
     .pipe(gulp.dest(paths.demo));
 });
 
+gulp.task('jade', function () {
+  return gulp.src(paths.jade)
+    .pipe(jade({
+      pretty: true
+    }))
+    .pipe(gulp.dest('src/.'));
+});
+
 gulp.task('build', function(callback) {
   return runSequence(
     'clean',
+    'jade',
     ['build-es6', 'build-commonjs', 'build-amd', 'build-system'],
     callback
   );
