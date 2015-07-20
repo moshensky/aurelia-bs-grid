@@ -4,6 +4,7 @@ var to5 = require('gulp-babel');
 var paths = require('../paths');
 var compilerOptions = require('../babel-options');
 var assign = Object.assign || require('object.assign');
+var sourcemaps = require('gulp-sourcemaps');
 
 gulp.task('build-css-es6', function () {
   return gulp.src(paths.css)
@@ -64,7 +65,9 @@ gulp.task('build-html-system', function () {
 
 gulp.task('build-system', ['build-html-system', 'build-css-system'], function () {
   return gulp.src(paths.source)
+    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(to5(assign({}, compilerOptions, {modules:'system'})))
+    .pipe(sourcemaps.write({includeContent: true}))
     .pipe(gulp.dest(paths.output + 'system'));
 });
 
