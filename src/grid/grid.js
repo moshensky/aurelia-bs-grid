@@ -72,7 +72,6 @@ export class Grid {
   cache = [];
   data = [];
   count = 0;
-  attached = false;
 
   // Subscription handling
   unbinding = false;
@@ -97,11 +96,13 @@ export class Grid {
     var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll('grid-col'));
 
     columnElements.forEach(c => {
+      var attrs = Array.prototype.slice.call(c.attributes);
+      var colHash = attrs.reduce((map, attribute) => {
+        map[attribute.name] = attribute.value;
+        return map;
+      }, {});
 
-      var attrs = Array.prototype.slice.call(c.attributes), colHash = {};
-      attrs.forEach(a => colHash[a.name] = a.value);
-
-      var col = new GridColumn(colHash, c.innerHTML);
+      var col = new GridColumn(colHash, c.innerHTML, this);
 
       this.addColumn(col);
     });
@@ -119,7 +120,6 @@ export class Grid {
   /* === Lifecycle === */
   attached() {
     this.gridHeightChanged();
-    this.attached = true;
 
     if (this.autoLoad === true) {
       this.refresh();
@@ -132,8 +132,9 @@ export class Grid {
 
     // Ensure the grid settings
     // If we can page on the server and we can't server sort, we can't sort locally
-    if (this.serverPaging && !this.serverSorting)
+    if (this.serverPaging && !this.serverSorting) {
       this.sortable = false;
+    }
 
     // Build the rows then dynamically compile the table
     // Get the table...
@@ -356,8 +357,8 @@ export class Grid {
     for (var i = this.columns.length - 1; i >= 0; i--) {
       var col = this.columns[i];
 
-      if (col.filterValue !== '') {
-        cols[col.field] = col.filterValue;
+      if (col.hasFilterValue()) {
+        cols[col.field] = col.getFilterValue();
       }
     }
 
@@ -370,11 +371,6 @@ export class Grid {
 
   /* === Data === */
   refresh() {
-    // Don't refresh until attached
-    if (this.attached === false) {
-      return;
-    }
-
     // If we have any server side stuff we need to get the data first
     this.dontWatchForChanges();
 

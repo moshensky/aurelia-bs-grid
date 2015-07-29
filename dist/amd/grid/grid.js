@@ -251,14 +251,13 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
         var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll('grid-col'));
 
         columnElements.forEach(function (c) {
+          var attrs = Array.prototype.slice.call(c.attributes);
+          var colHash = attrs.reduce(function (map, attribute) {
+            map[attribute.name] = attribute.value;
+            return map;
+          }, {});
 
-          var attrs = Array.prototype.slice.call(c.attributes),
-              colHash = {};
-          attrs.forEach(function (a) {
-            return colHash[a.name] = a.value;
-          });
-
-          var col = new _gridColumn.GridColumn(colHash, c.innerHTML);
+          var col = new _gridColumn.GridColumn(colHash, c.innerHTML, _this);
 
           _this.addColumn(col);
         });
@@ -276,7 +275,9 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
       value: function attached() {
         this.gridHeightChanged();
 
-        if (this.autoLoad) this.refresh();
+        if (this.autoLoad === true) {
+          this.refresh();
+        }
       }
     }, {
       key: 'bind',
@@ -284,7 +285,9 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
 
         this['$parent'] = executionContext;
 
-        if (this.serverPaging && !this.serverSorting) this.sortable = false;
+        if (this.serverPaging && !this.serverSorting) {
+          this.sortable = false;
+        }
 
         var table = this.element.querySelector('table>tbody');
         var rowTemplate = table.querySelector('tr');
@@ -294,11 +297,11 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
         fragment.appendChild(rowTemplate);
 
         rowTemplate.setAttribute('repeat.for', '$item of data');
-        rowTemplate.setAttribute('class', '${ $item === $parent.selectedItem ? \'info\' : \'\' }');
+        rowTemplate.setAttribute('class', '${ $item === $parent.selectedItem ? "info" : "" }');
 
         for (var prop in this.rowAttrs) {
           if (this.rowAttrs.hasOwnProperty(prop)) {
-            rowTemplate.setAttribute(prop, this.rowTemplate[prop]);
+            rowTemplate.setAttribute(prop, this.rowAttrs[prop]);
           }
         }
 
@@ -334,7 +337,11 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
       }
     }, {
       key: 'pageChanged',
-      value: function pageChanged(page) {
+      value: function pageChanged(page, oldValue) {
+        if (page === oldValue) {
+          return;
+        }
+
         this.pageNumber = Number(page);
         this.refresh();
       }
@@ -441,7 +448,6 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
             if (sort == prop && this.sorting[prop] !== '') fields.push(this.sorting[prop] === 'asc' ? prop : '-' + prop);
           }
         }
-        ;
 
         data = data.sort(this.fieldSorter(fields));
 
@@ -469,13 +475,13 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
     }, {
       key: 'getFilterColumns',
       value: function getFilterColumns() {
-        var cols = [];
+        var cols = {};
 
         for (var i = this.columns.length - 1; i >= 0; i--) {
           var col = this.columns[i];
 
-          if (col.filterValue !== '') {
-            cols.push({ field: col.field, value: col.filterValue });
+          if (col.hasFilterValue()) {
+            cols[col.field] = col.getFilterValue();
           }
         }
 

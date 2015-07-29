@@ -258,14 +258,13 @@ var Grid = (function () {
       var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll('grid-col'));
 
       columnElements.forEach(function (c) {
+        var attrs = Array.prototype.slice.call(c.attributes);
+        var colHash = attrs.reduce(function (map, attribute) {
+          map[attribute.name] = attribute.value;
+          return map;
+        }, {});
 
-        var attrs = Array.prototype.slice.call(c.attributes),
-            colHash = {};
-        attrs.forEach(function (a) {
-          return colHash[a.name] = a.value;
-        });
-
-        var col = new _gridColumn.GridColumn(colHash, c.innerHTML);
+        var col = new _gridColumn.GridColumn(colHash, c.innerHTML, _this);
 
         _this.addColumn(col);
       });
@@ -283,7 +282,9 @@ var Grid = (function () {
     value: function attached() {
       this.gridHeightChanged();
 
-      if (this.autoLoad) this.refresh();
+      if (this.autoLoad === true) {
+        this.refresh();
+      }
     }
   }, {
     key: 'bind',
@@ -291,7 +292,9 @@ var Grid = (function () {
 
       this['$parent'] = executionContext;
 
-      if (this.serverPaging && !this.serverSorting) this.sortable = false;
+      if (this.serverPaging && !this.serverSorting) {
+        this.sortable = false;
+      }
 
       var table = this.element.querySelector('table>tbody');
       var rowTemplate = table.querySelector('tr');
@@ -301,11 +304,11 @@ var Grid = (function () {
       fragment.appendChild(rowTemplate);
 
       rowTemplate.setAttribute('repeat.for', '$item of data');
-      rowTemplate.setAttribute('class', '${ $item === $parent.selectedItem ? \'info\' : \'\' }');
+      rowTemplate.setAttribute('class', '${ $item === $parent.selectedItem ? "info" : "" }');
 
       for (var prop in this.rowAttrs) {
         if (this.rowAttrs.hasOwnProperty(prop)) {
-          rowTemplate.setAttribute(prop, this.rowTemplate[prop]);
+          rowTemplate.setAttribute(prop, this.rowAttrs[prop]);
         }
       }
 
@@ -341,7 +344,11 @@ var Grid = (function () {
     }
   }, {
     key: 'pageChanged',
-    value: function pageChanged(page) {
+    value: function pageChanged(page, oldValue) {
+      if (page === oldValue) {
+        return;
+      }
+
       this.pageNumber = Number(page);
       this.refresh();
     }
@@ -448,7 +455,6 @@ var Grid = (function () {
           if (sort == prop && this.sorting[prop] !== '') fields.push(this.sorting[prop] === 'asc' ? prop : '-' + prop);
         }
       }
-      ;
 
       data = data.sort(this.fieldSorter(fields));
 
@@ -476,13 +482,13 @@ var Grid = (function () {
   }, {
     key: 'getFilterColumns',
     value: function getFilterColumns() {
-      var cols = [];
+      var cols = {};
 
       for (var i = this.columns.length - 1; i >= 0; i--) {
         var col = this.columns[i];
 
-        if (col.filterValue !== '') {
-          cols.push({ field: col.field, value: col.filterValue });
+        if (col.hasFilterValue()) {
+          cols[col.field] = col.getFilterValue();
         }
       }
 
