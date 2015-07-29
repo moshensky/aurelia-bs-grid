@@ -40,6 +40,21 @@ export class GridColumn {
     }
   }
 
+  toggleBooleanFilter() {
+    if (this.filterValue === undefined) {
+      this.filterValue = true;
+    } else {
+      this.filterValue = !this.filterValue;
+    }
+
+    this.updateFilters();
+  }
+
+  clearBooleanFilter() {
+    this.filterValue = undefined;
+    this.updateFilters();
+  }
+
   getFilterValue() {
     if (this.showDateFromToFilter === true) {
       return {

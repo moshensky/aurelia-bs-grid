@@ -13,14 +13,10 @@
               <datepicker if.bind="$column.showDateFilter" value.two-way="$column.filterValue" change.trigger="$column.updateFilters()"></datepicker>
               <datepicker if.bind="$column.showDateFromToFilter" value.two-way="$column.filterValueFrom" change.trigger="$column.updateFilters()"></datepicker><br if.bind="$column.showDateFromToFilter"/>
               <datepicker if.bind="$column.showDateFromToFilter" value.two-way="$column.filterValueTo" change.trigger="$column.updateFilters()"></datepicker>
-              <!--div(if.bind="$column.showBooleanFolter")
-              button.btn.btn-primary(click.delegate="")
-                i.fa.fa-square-o.fa-lg(show.bind="$column.filterValue === false")
-                i.fa.fa-check-square.fa-lg(show.bind="$column.filterValue === true")
-              button.btn.btn-primary(click.delegate="$parent.$parent.copyRequest($item.id)", title="${ 'common.copy' | t }")
-                i.fa.fa-pencil.fa-lg(show.bind="$column.filterValue == undefined")
-              
-              -->
+              <div if.bind="$column.showBooleanFilter">
+                <button click.delegate="$column.toggleBooleanFilter()" class="btn btn-primary"><i show.bind="$column.filterValue === false || $column.filterValue == undefined" class="fa fa-square-o fa-lg"></i><i show.bind="$column.filterValue === true" class="fa fa-check-square fa-lg"></i></button>
+                <button click.delegate="$column.clearBooleanFilter()" if.bind="$column.filterValue != undefined" class="btn btn-primary"><i class="fa fa-times-circle fa-lg"></i></button>
+              </div>
             </td>
           </tr>
           <tr role="button">

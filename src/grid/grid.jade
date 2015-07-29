@@ -13,12 +13,12 @@ template
               datepicker(if.bind="$column.showDateFromToFilter", value.two-way="$column.filterValueFrom", change.trigger="$column.updateFilters()")
               br(if.bind="$column.showDateFromToFilter")
               datepicker(if.bind="$column.showDateFromToFilter", value.two-way="$column.filterValueTo", change.trigger="$column.updateFilters()")
-              //div(if.bind="$column.showBooleanFolter")
-                button.btn.btn-primary(click.delegate="")
-                  i.fa.fa-square-o.fa-lg(show.bind="$column.filterValue === false")
+              div(if.bind="$column.showBooleanFilter")
+                button.btn.btn-primary(click.delegate="$column.toggleBooleanFilter()")
+                  i.fa.fa-square-o.fa-lg(show.bind="$column.filterValue === false || $column.filterValue == undefined")
                   i.fa.fa-check-square.fa-lg(show.bind="$column.filterValue === true")
-                button.btn.btn-primary(click.delegate="$parent.$parent.copyRequest($item.id)", title="${ 'common.copy' | t }")
-                  i.fa.fa-pencil.fa-lg(show.bind="$column.filterValue == undefined")
+                button.btn.btn-primary(click.delegate="$column.clearBooleanFilter()",  if.bind="$column.filterValue != undefined")
+                  i.fa.fa-times-circle.fa-lg
 
           tr(role="button")
             th(repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }")

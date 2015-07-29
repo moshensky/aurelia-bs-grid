@@ -37,6 +37,13 @@ var Grid = (function () {
     },
     enumerable: true
   }, {
+    key: 'filterDelay',
+    decorators: [_aureliaFramework.bindable],
+    initializer: function initializer() {
+      return 250;
+    },
+    enumerable: true
+  }, {
     key: 'showColumnFilters',
     decorators: [_aureliaFramework.bindable],
     initializer: function initializer() {
@@ -182,6 +189,10 @@ var Grid = (function () {
     _defineDecoratedPropertyDescriptor(this, 'gridHeight', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'initialLoad', _instanceInitializers);
+
+    this.updateFiltersSetTimeout = undefined;
+
+    _defineDecoratedPropertyDescriptor(this, 'filterDelay', _instanceInitializers);
 
     _defineDecoratedPropertyDescriptor(this, 'showColumnFilters', _instanceInitializers);
 
@@ -497,7 +508,11 @@ var Grid = (function () {
   }, {
     key: 'updateFilters',
     value: function updateFilters() {
-      this.refresh();
+      if (this.updateFiltersSetTimeout) {
+        window.clearTimeout(this.updateFiltersSetTimeout);
+      }
+
+      this.updateFiltersSetTimeout = window.setTimeout(this.refresh.bind(this), this.filterDelay);
     }
   }, {
     key: 'refresh',

@@ -17,6 +17,8 @@ export class Grid {
   @bindable initialLoad = false;
 
   // Filtering
+  updateFiltersSetTimeout = undefined;
+  @bindable filterDelay = 250;
   @bindable showColumnFilters = false;
   @bindable serverFiltering = false;
 
@@ -366,7 +368,11 @@ export class Grid {
   }
 
   updateFilters() {
-    this.refresh();
+    if (this.updateFiltersSetTimeout) {
+      window.clearTimeout(this.updateFiltersSetTimeout);
+    }
+
+    this.updateFiltersSetTimeout = window.setTimeout(this.refresh.bind(this), this.filterDelay);
   }
 
   /* === Data === */

@@ -30,6 +30,13 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
       },
       enumerable: true
     }, {
+      key: 'filterDelay',
+      decorators: [_aureliaFramework.bindable],
+      initializer: function initializer() {
+        return 250;
+      },
+      enumerable: true
+    }, {
       key: 'showColumnFilters',
       decorators: [_aureliaFramework.bindable],
       initializer: function initializer() {
@@ -175,6 +182,10 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
       _defineDecoratedPropertyDescriptor(this, 'gridHeight', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'initialLoad', _instanceInitializers);
+
+      this.updateFiltersSetTimeout = undefined;
+
+      _defineDecoratedPropertyDescriptor(this, 'filterDelay', _instanceInitializers);
 
       _defineDecoratedPropertyDescriptor(this, 'showColumnFilters', _instanceInitializers);
 
@@ -490,7 +501,11 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
     }, {
       key: 'updateFilters',
       value: function updateFilters() {
-        this.refresh();
+        if (this.updateFiltersSetTimeout) {
+          window.clearTimeout(this.updateFiltersSetTimeout);
+        }
+
+        this.updateFiltersSetTimeout = window.setTimeout(this.refresh.bind(this), this.filterDelay);
       }
     }, {
       key: 'refresh',

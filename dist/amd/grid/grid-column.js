@@ -53,6 +53,23 @@ define(['exports'], function (exports) {
         }
       }
     }, {
+      key: 'toggleBooleanFilter',
+      value: function toggleBooleanFilter() {
+        if (this.filterValue === undefined) {
+          this.filterValue = true;
+        } else {
+          this.filterValue = !this.filterValue;
+        }
+
+        this.updateFilters();
+      }
+    }, {
+      key: 'clearBooleanFilter',
+      value: function clearBooleanFilter() {
+        this.filterValue = undefined;
+        this.updateFilters();
+      }
+    }, {
       key: 'getFilterValue',
       value: function getFilterValue() {
         if (this.showDateFromToFilter === true) {
