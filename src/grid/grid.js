@@ -57,12 +57,12 @@ export class Grid {
   @bindable selectedItem = null;
 
   // Misc
-  @bindable noRowsMessage = "";
+  @bindable noRowsMessage = '';
 
   // Data ....
   @bindable autoLoad = true;
   loading = false;
-  @bindable loadingMessage = "Loading...";
+  @bindable loadingMessage = 'Loading...';
 
   // Read
   @bindable read = null;
@@ -92,8 +92,8 @@ export class Grid {
   processUserTemplate() {
 
     // Get any col tags from the content
-    var rowElement = this.element.querySelector("grid-row");
-    var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll("grid-col"));
+    var rowElement = this.element.querySelector('grid-row');
+    var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll('grid-col'));
 
     columnElements.forEach(c => {
 
@@ -125,7 +125,7 @@ export class Grid {
 
   bind(executionContext) {
 
-    this["$parent"] = executionContext;
+    this['$parent'] = executionContext;
 
     // Ensure the grid settings
     // If we can page on the server and we can't server sort, we can't sort locally
@@ -134,8 +134,8 @@ export class Grid {
 
     // Build the rows then dynamically compile the table
     // Get the table...
-    var table = this.element.querySelector("table>tbody");
-    var rowTemplate = table.querySelector("tr");
+    var table = this.element.querySelector('table>tbody');
+    var rowTemplate = table.querySelector('tr');
 
     // Create a fragment we will manipulate the DOM in
     var fragment = document.createDocumentFragment();
@@ -144,8 +144,8 @@ export class Grid {
     fragment.appendChild(rowTemplate);
 
     // Create the repeater
-    rowTemplate.setAttribute("repeat.for", "$item of data");
-    rowTemplate.setAttribute("class", "${ $item === $parent.selectedItem ? 'info' : '' }");
+    rowTemplate.setAttribute('repeat.for', '$item of data');
+    rowTemplate.setAttribute('class', '${ $item === $parent.selectedItem ? 'info' : '' }');
 
     // Copy any user specified row attributes to the row template
     for (var prop in this.rowAttrs) {
@@ -156,13 +156,13 @@ export class Grid {
 
     // Create the columns
     this.columns.forEach(c => {
-      var td = document.createElement("td");
+      var td = document.createElement('td');
 
       // Set attributes
       for (var prop in c) {
         if (c.hasOwnProperty(prop)) {
 
-          if (prop == "template")
+          if (prop == 'template')
             td.innerHTML = c[prop];
           else
             td.setAttribute(prop, c[prop]);
@@ -278,14 +278,14 @@ export class Grid {
 
     // Figure out which way this field should be sorting
     switch (this.sorting[field]) {
-      case "asc":
-        newSort = "desc";
+      case 'asc':
+        newSort = 'desc';
         break;
-      case "desc":
-        newSort = "";
+      case 'desc':
+        newSort = '';
         break;
       default:
-        newSort = "asc";
+        newSort = 'asc';
         break;
     }
 
@@ -308,13 +308,13 @@ export class Grid {
     // Format the sort fields
     var fields = [];
 
-    // Get the fields in the "sortingORder"
+    // Get the fields in the 'sortingORder'
     for (var i = 0; i < this.sortProcessingOrder.length; i++) {
       var sort = this.sortProcessingOrder[i];
 
       for (var prop in this.sorting) {
-        if (sort == prop && this.sorting[prop] !== "")
-          fields.push(this.sorting[prop] === "asc" ? (prop) : ("-" + prop));
+        if (sort == prop && this.sorting[prop] !== '')
+          fields.push(this.sorting[prop] === 'asc' ? (prop) : ('-' + prop));
       }
     }
     ;
@@ -334,7 +334,7 @@ export class Grid {
       for (var i = this.columns.length - 1; i >= 0; i--) {
         var col = this.columns[i];
 
-        if (col.filterValue !== "" && row[col.field].toString().indexOf(col.filterValue) === -1) {
+        if (col.filterValue !== '' && row[col.field].toString().indexOf(col.filterValue) === -1) {
           include = false;
         }
       }
@@ -349,7 +349,7 @@ export class Grid {
     for (var i = this.columns.length - 1; i >= 0; i--) {
       var col = this.columns[i];
 
-      if (col.filterValue !== "") {
+      if (col.filterValue !== '') {
         cols.push({field: col.field, value: col.filterValue});
       }
     }
@@ -375,7 +375,7 @@ export class Grid {
 
   getData() {
     if (!this.read)
-      throw new Error("No read method specified for grid");
+      throw new Error('No read method specified for grid');
 
     this.initialLoad = true;
 
@@ -454,18 +454,18 @@ export class Grid {
 
   /* === Change handlers === */
   noRowsMessageChanged() {
-    this.showNoRowsMessage = this.noRowsMessage !== "";
+    this.showNoRowsMessage = this.noRowsMessage !== '';
   }
 
   gridHeightChanged() {
 
     // TODO: Make this a one off
-    var cont = this.element.querySelector(".grid-container");
+    var cont = this.element.querySelector('.grid-container');
 
     if (this.gridHeight > 0) {
-      cont.setAttribute("style", "height:" + this.gridHeight + "px");
+      cont.setAttribute('style', 'height:' + this.gridHeight + 'px');
     } else {
-      cont.removeAttribute("style");
+      cont.removeAttribute('style');
     }
   }
 }
