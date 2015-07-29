@@ -9,6 +9,7 @@ template
           tr(if.bind="showColumnFilters")
             th(repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }")
               input.form-control(if.bind="$column.showFilter", value.bind="$column.filterValue", input.delegate="$parent.updateFilters()")
+
           tr(role="button")
             th(repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }")
               a(if.bind="$column.nosort == false && $parent.sortable", click.trigger="$parent.sortChanged($column.field)") ${ $column.heading }

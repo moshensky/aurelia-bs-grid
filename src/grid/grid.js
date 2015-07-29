@@ -72,6 +72,7 @@ export class Grid {
   cache = [];
   data = [];
   count = 0;
+  attached = false;
 
   // Subscription handling
   unbinding = false;
@@ -118,9 +119,11 @@ export class Grid {
   /* === Lifecycle === */
   attached() {
     this.gridHeightChanged();
+    this.attached = true;
 
-    if (this.autoLoad)
+    if (this.autoLoad === true) {
       this.refresh();
+    }
   }
 
   bind(executionContext) {
@@ -145,12 +148,12 @@ export class Grid {
 
     // Create the repeater
     rowTemplate.setAttribute('repeat.for', '$item of data');
-    rowTemplate.setAttribute('class', '${ $item === $parent.selectedItem ? 'info' : '' }');
+    rowTemplate.setAttribute('class', '${ $item === $parent.selectedItem ? "info" : "" }');
 
     // Copy any user specified row attributes to the row template
     for (var prop in this.rowAttrs) {
       if (this.rowAttrs.hasOwnProperty(prop)) {
-        rowTemplate.setAttribute(prop, this.rowTemplate[prop]);
+        rowTemplate.setAttribute(prop, this.rowAttrs[prop]);
       }
     }
 
@@ -195,7 +198,11 @@ export class Grid {
   }
 
   /* === Paging === */
-  pageChanged(page) {
+  pageChanged(page, oldValue) {
+    if (page === oldValue) {
+      return;
+    }
+
     this.pageNumber = Number(page);
     this.refresh();
   }
@@ -317,7 +324,7 @@ export class Grid {
           fields.push(this.sorting[prop] === 'asc' ? (prop) : ('-' + prop));
       }
     }
-    ;
+
 
 
     // If server sort, just refresh
@@ -344,13 +351,13 @@ export class Grid {
   }
 
   getFilterColumns() {
-    var cols = [];
+    var cols = {};
 
     for (var i = this.columns.length - 1; i >= 0; i--) {
       var col = this.columns[i];
 
       if (col.filterValue !== '') {
-        cols.push({field: col.field, value: col.filterValue});
+        cols[col.field] = col.filterValue;
       }
     }
 
@@ -363,6 +370,11 @@ export class Grid {
 
   /* === Data === */
   refresh() {
+    // Don't refresh until attached
+    if (this.attached === false) {
+      return;
+    }
+
     // If we have any server side stuff we need to get the data first
     this.dontWatchForChanges();
 
@@ -427,7 +439,6 @@ export class Grid {
   }
 
   watchForChanges() {
-
     this.dontWatchForChanges();
 
     // Guard against data refresh events hitting after the user does anything that unloads the grid
