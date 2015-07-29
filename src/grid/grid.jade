@@ -19,6 +19,7 @@ template
                   i.fa.fa-check-square.fa-lg(show.bind="$column.filterValue === true")
                 button.btn.btn-primary(click.delegate="$column.clearBooleanFilter()",  if.bind="$column.filterValue != undefined")
                   i.fa.fa-times-circle.fa-lg
+              select-two(if.bind="$column.showSelect2Filter", value.two-way="$column.filterValue", caption="${ 'common.choose' | t }", items.bind="$parent.$parent[$column.select2Items]", change.trigger="$column.updateFilters()")
 
           tr(role="button")
             th(repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }")

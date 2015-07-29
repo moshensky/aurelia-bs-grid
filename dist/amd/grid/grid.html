@@ -17,6 +17,7 @@
                 <button click.delegate="$column.toggleBooleanFilter()" class="btn btn-primary"><i show.bind="$column.filterValue === false || $column.filterValue == undefined" class="fa fa-square-o fa-lg"></i><i show.bind="$column.filterValue === true" class="fa fa-check-square fa-lg"></i></button>
                 <button click.delegate="$column.clearBooleanFilter()" if.bind="$column.filterValue != undefined" class="btn btn-primary"><i class="fa fa-times-circle fa-lg"></i></button>
               </div>
+              <select-two if.bind="$column.showSelect2Filter" value.two-way="$column.filterValue" caption="${ 'common.choose' | t }" items.bind="$parent.$parent[$column.select2Items]" change.trigger="$column.updateFilters()"></select-two>
             </td>
           </tr>
           <tr role="button">
