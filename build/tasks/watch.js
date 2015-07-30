@@ -46,10 +46,12 @@ function compileLess(event) {
 }
 
 gulp.task('watch', ['compile-jade', 'compile-less'], function () {
-  gulp.watch(paths.source, ['build-js-system', browserSync.reload]).on('change', reportChange);
-  gulp.watch(paths.html, ['build-html-system', browserSync.reload]).on('change', reportChange);
-  gulp.watch(paths.css, ['build-css-system', browserSync.reload]).on('change', reportChange);
+  gulp.watch(paths.source, ['build-js-system', 'copy', browserSync.reload]).on('change', reportChange);
+  gulp.watch(paths.html, ['build-html-system', 'copy', browserSync.reload]).on('change', reportChange);
+  gulp.watch(paths.css, ['build-css-system', 'copy', browserSync.reload]).on('change', reportChange);
   gulp.watch(paths.style, browserSync.reload).on('change', reportChange);
   gulp.watch(paths.jade, compileJade);
   gulp.watch(paths.less, compileLess);
 });
+
+

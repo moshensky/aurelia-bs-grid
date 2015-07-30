@@ -217,7 +217,6 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
 
       this.sortProcessingOrder = [];
       this.sorting = {};
-      this.Trogdor = true;
 
       _defineDecoratedPropertyDescriptor(this, 'autoGenerateColumns', _instanceInitializers);
 
@@ -257,6 +256,8 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
       key: 'processUserTemplate',
       value: function processUserTemplate() {
         var _this = this;
+
+        console.warn('here a');
 
         var rowElement = this.element.querySelector('grid-row');
         var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll('grid-col'));

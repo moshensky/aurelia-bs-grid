@@ -46,9 +46,6 @@ export class Grid {
   sortProcessingOrder = []; // Represents which order to apply sorts to each column
   sorting = {};
 
-  // Burnination?
-  Trogdor = true;
-
   // Column defs
   @bindable autoGenerateColumns;
   columnHeaders = [];
@@ -92,7 +89,7 @@ export class Grid {
   }
 
   processUserTemplate() {
-
+    console.warn('here a');
     // Get any col tags from the content
     var rowElement = this.element.querySelector('grid-row');
     var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll('grid-col'));
