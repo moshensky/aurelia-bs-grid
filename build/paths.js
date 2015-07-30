@@ -7,11 +7,12 @@ module.exports = {
   source: appRoot + '**/*.js',
   html: appRoot + '**/*.html',
   css: appRoot + '**/*.css',
+  less: appRoot + '**/*.less',
   jade: appRoot + '**/*.jade',
   style: 'styles/**/*.css',
   output: 'dist/',
   doc:'./doc',
   e2eSpecsSrc: 'test/e2e/src/*.js',
   e2eSpecsDist: 'test/e2e/dist/',
-  demo: '../aurelia-grid/jspm_packages/github/charlespockert/aurelia-bs-grid@master/',
+  demo: '../aurelia-grid/jspm_packages/github/charlespockert/aurelia-bs-grid@master/'
 };
