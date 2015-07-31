@@ -44,7 +44,7 @@ export class Grid {
   @bindable serverSorting = false;
   @bindable sortable = true;
   sortProcessingOrder = []; // Represents which order to apply sorts to each column
-  sorting = {};
+  sorting = [];
 
   // Column defs
   @bindable autoGenerateColumns;
@@ -278,6 +278,7 @@ export class Grid {
     this.refresh();
   }
 
+  // todo: remove or redo
   sortChanged(field) {
 
     // Determine new sort
@@ -310,6 +311,7 @@ export class Grid {
     this.refresh();
   }
 
+  // todo: remove or redo
   applySort(data) {
 
     // Format the sort fields
@@ -326,11 +328,31 @@ export class Grid {
     }
 
 
-
     // If server sort, just refresh
     data = data.sort(this.fieldSorter(fields));
 
     return data;
+  }
+
+
+  changeSort(sort) {
+    let index = this.sorting.findIndex((el, index) => {
+      if (el.name === sort.name) {
+        return true;
+      }
+
+      return false;
+    });
+
+    if (index > -1) {
+      this.sorting.splice(index, 1);
+    }
+
+    if (sort.value !== undefined) {
+      this.sorting.push(sort);
+    }
+
+    this.refresh();
   }
 
   /* === Filtering === */
@@ -350,18 +372,27 @@ export class Grid {
     });
   }
 
-  getFilterColumns() {
-    var cols = {};
-
+  getFiltersQueryString() {
+    var filters = [];
     for (var i = this.columns.length - 1; i >= 0; i--) {
-      var col = this.columns[i];
-
-      if (col.hasFilterValue()) {
-        cols[col.field] = col.getFilterValue();
+      let col = this.columns[i];
+      let filterQueryString = col.getQueryString();
+      if (filterQueryString !== undefined) {
+        filters.push(filterQueryString);
       }
     }
 
-    return cols;
+    return filters;
+  }
+
+  getFiltersValues() {
+    let filters = [];
+    for (var i = this.columns.length - 1; i >= 0; i--) {
+      let col = this.columns[i];
+      filters = filters.concat(col.getFilterValue());
+    }
+
+    return filters;
   }
 
   updateFilters() {
@@ -394,24 +425,26 @@ export class Grid {
     this.loading = true;
 
     // Try to read from the data adapter
-    this.read({
-      sorting: this.sorting,
-      paging: {page: this.pageNumber, size: Number(this.pageSize)},
-      filtering: this.getFilterColumns()
-    })
-      .then((result) => {
+    let queryValues = {};
+    queryValues.filters = this.getFiltersValues();
+    queryValues.paging = {
+      page: this.pageNumber,
+      count: window.Number(this.pageSize, 10)
+    };
+    queryValues.sorters = this.sorting;
 
-        // Data should be in the result so grab it and assign it to the data property
-        this.handleResult(result);
+    this.read(queryValues).then((result) => {
+      // Data should be in the result so grab it and assign it to the data property
+      this.handleResult(result);
 
-        this.loading = false;
-      }, (result) => {
-        // Something went terribly wrong, notify the consumer
-        if (this.onReadError)
-          this.onReadError(result);
+      this.loading = false;
+    }, (result) => {
+      // Something went terribly wrong, notify the consumer
+      if (this.onReadError)
+        this.onReadError(result);
 
-        this.loading = false;
-      });
+      this.loading = false;
+    });
   }
 
   handleResult(result) {

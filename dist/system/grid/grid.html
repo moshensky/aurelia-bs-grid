@@ -23,11 +23,11 @@
             </td>
           </tr>
           <tr role="button">
-            <th repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }"><a if.bind="$column.nosort == false &amp;&amp; $parent.sortable" click.trigger="$parent.sortChanged($column.field)">${ $column.heading }</a><span if.bind="$column.nosort == true || !$parent.sortable">${ $column.heading }</span>
-              <svg if.bind="$parent.sorting[$column.field] === 'desc'" height="8" width="10">
+            <th repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }"><a if.bind="$column.nosort == false &amp;&amp; $parent.sortable" click.trigger="$column.changeDirectionSort()">${ $column.heading }</a><span if.bind="$column.nosort == true || !$parent.sortable">${ $column.heading }</span>
+              <svg if.bind="$column.sortDirection === 'desc'" height="8" width="10">
                 <polygon points="0,0 8,0 4,8" class="grid-sort-arrow"></polygon>
               </svg>
-              <svg if.bind="$parent.sorting[$column.field] === 'asc'" height="8" width="10">
+              <svg if.bind="$column.sortDirection === 'asc'" height="8" width="10">
                 <polygon points="0,8 8,8 4,0" class="grid-sort-arrow"></polygon>
               </svg>
             </th>

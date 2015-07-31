@@ -23,6 +23,8 @@ define(['exports'], function (exports) {
 
       this.heading = config.heading || config.field;
       this.nosort = config.nosort || false;
+      this.sortDirection = undefined;
+
       this.filterValue = undefined;
       this.filterValueFrom = undefined;
       this.filterValueTo = undefined;
@@ -41,6 +43,26 @@ define(['exports'], function (exports) {
     }
 
     _createClass(GridColumn, [{
+      key: 'changeDirectionSort',
+      value: function changeDirectionSort() {
+        switch (this.sortDirection) {
+          case 'asc':
+            this.sortDirection = 'desc';
+            break;
+          case 'desc':
+            this.sortDirection = undefined;
+            break;
+          default:
+            this.sortDirection = 'asc';
+            break;
+        }
+
+        this.parent.changeSort({
+          name: this.field,
+          value: this.sortDirection
+        });
+      }
+    }, {
       key: 'updateFilters',
       value: function updateFilters() {
         this.parent.updateFilters();
@@ -75,12 +97,51 @@ define(['exports'], function (exports) {
       key: 'getFilterValue',
       value: function getFilterValue() {
         if (this.showDateFromToFilter === true) {
-          return {
-            from: this.filterValueFrom,
-            to: this.filterValueTo
-          };
+          if (this.filterValueFrom && this.filterValueTo) {
+            return [{
+              name: this.field + 'From',
+              value: this.filterValueFrom.unix() * 1000
+            }, {
+              name: this.field + 'To',
+              value: this.filterValueTo.unix() * 1000
+            }];
+          } else if (this.filterValueFrom) {
+            return [{
+              name: this.field + 'From',
+              value: this.filterValueFrom.unix() * 1000
+            }];
+          } else if (this.filterValueTo) {
+            return [{
+              name: this.field + 'To',
+              value: this.filterValueTo.unix() * 1000
+            }];
+          }
+        } else if (this.filterValue) {
+          return [{
+            name: this.field,
+            value: this.filterValue
+          }];
+        }
+
+        return [];
+      }
+    }, {
+      key: 'getQueryString',
+      value: function getQueryString() {
+        if (this.showDateFromToFilter === true) {
+          if (this.filterValueFrom && this.filterValueTo) {
+            return this.field + 'From=' + this.filterValueFrom.unix() * 1000 + '&' + this.field + 'To=' + this.filterValueTo.unix() * 1000;
+          } else if (this.filterValueFrom) {
+            return this.field + 'From=' + this.filterValueFrom.unix() * 1000;
+          } else if (this.filterValueTo) {
+            return this.field + 'To=' + this.filterValueTo.unix() * 1000;
+          } else {
+            return undefined;
+          }
+        } else if (this.filterValue) {
+          return this.field + '=' + this.filterValue;
         } else {
-          return this.filterValue;
+          return undefined;
         }
       }
     }]);

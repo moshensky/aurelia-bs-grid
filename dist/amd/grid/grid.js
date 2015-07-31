@@ -216,7 +216,7 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
       _defineDecoratedPropertyDescriptor(this, 'sortable', _instanceInitializers);
 
       this.sortProcessingOrder = [];
-      this.sorting = {};
+      this.sorting = [];
 
       _defineDecoratedPropertyDescriptor(this, 'autoGenerateColumns', _instanceInitializers);
 
@@ -464,6 +464,27 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
         return data;
       }
     }, {
+      key: 'changeSort',
+      value: function changeSort(sort) {
+        var index = this.sorting.findIndex(function (el, index) {
+          if (el.name === sort.name) {
+            return true;
+          }
+
+          return false;
+        });
+
+        if (index > -1) {
+          this.sorting.splice(index, 1);
+        }
+
+        if (sort.value !== undefined) {
+          this.sorting.push(sort);
+        }
+
+        this.refresh();
+      }
+    }, {
       key: 'applyFilter',
       value: function applyFilter(data) {
         var _this2 = this;
@@ -483,19 +504,29 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
         });
       }
     }, {
-      key: 'getFilterColumns',
-      value: function getFilterColumns() {
-        var cols = {};
-
+      key: 'getFiltersQueryString',
+      value: function getFiltersQueryString() {
+        var filters = [];
         for (var i = this.columns.length - 1; i >= 0; i--) {
           var col = this.columns[i];
-
-          if (col.hasFilterValue()) {
-            cols[col.field] = col.getFilterValue();
+          var filterQueryString = col.getQueryString();
+          if (filterQueryString !== undefined) {
+            filters.push(filterQueryString);
           }
         }
 
-        return cols;
+        return filters;
+      }
+    }, {
+      key: 'getFiltersValues',
+      value: function getFiltersValues() {
+        var filters = [];
+        for (var i = this.columns.length - 1; i >= 0; i--) {
+          var col = this.columns[i];
+          filters = filters.concat(col.getFilterValue());
+        }
+
+        return filters;
       }
     }, {
       key: 'updateFilters',
@@ -524,11 +555,15 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
 
         this.loading = true;
 
-        this.read({
-          sorting: this.sorting,
-          paging: { page: this.pageNumber, size: Number(this.pageSize) },
-          filtering: this.getFilterColumns()
-        }).then(function (result) {
+        var queryValues = {};
+        queryValues.filters = this.getFiltersValues();
+        queryValues.paging = {
+          page: this.pageNumber,
+          count: window.Number(this.pageSize, 10)
+        };
+        queryValues.sorters = this.sorting;
+
+        this.read(queryValues).then(function (result) {
           _this3.handleResult(result);
 
           _this3.loading = false;
