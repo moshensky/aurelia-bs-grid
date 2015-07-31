@@ -89,7 +89,6 @@ export class Grid {
   }
 
   processUserTemplate() {
-    console.warn('here a');
     // Get any col tags from the content
     var rowElement = this.element.querySelector('grid-row');
     var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll('grid-col'));
@@ -115,6 +114,7 @@ export class Grid {
     while (this.element.childNodes.length > 0)
       this.element.removeChild(this.element.childNodes[0]);
   }
+
 
   /* === Lifecycle === */
   attached() {

@@ -3,16 +3,18 @@
 -->
 <template>
   <require from="../pager/pager"></require>
-  <div>
-    <div show.bind="!showNoRowsMessage || (showNoRowsMessage &amp;&amp; count &gt; 0)" class="grid-container">
-      <table show.bind="!showNoRowsMessage || (showNoRowsMessage &amp;&amp; count &gt; 0)" class="table table-hover table-striped table-responsive selectable">
+  <div class="wrapper">
+    <div show.bind="!showNoRowsMessage || (showNoRowsMessage &amp;&amp; count &gt; 0)" class="grid-container header">
+      <table show.bind="!showNoRowsMessage || (showNoRowsMessage &amp;&amp; count &gt; 0)" class="table table-hover selectable">
         <thead>
           <tr if.bind="showColumnFilters">
             <td repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }">
               <input if.bind="$column.showInputFilter" value.bind="$column.filterValue" input.delegate="$column.updateFilters()" class="form-control"/>
               <datepicker if.bind="$column.showDateFilter" value.two-way="$column.filterValue" change.trigger="$column.updateFilters()"></datepicker>
-              <datepicker if.bind="$column.showDateFromToFilter" value.two-way="$column.filterValueFrom" change.trigger="$column.updateFilters()"></datepicker><br if.bind="$column.showDateFromToFilter"/>
-              <datepicker if.bind="$column.showDateFromToFilter" value.two-way="$column.filterValueTo" change.trigger="$column.updateFilters()"></datepicker>
+              <div if.bind="$column.showDateFromToFilter">
+                <datepicker value.two-way="$column.filterValueFrom" change.trigger="$column.updateFilters()"></datepicker>
+                <datepicker value.two-way="$column.filterValueTo" change.trigger="$column.updateFilters()"></datepicker>
+              </div>
               <div if.bind="$column.showBooleanFilter">
                 <button click.delegate="$column.toggleBooleanFilter()" class="btn btn-primary"><i show.bind="$column.filterValue === false || $column.filterValue == undefined" class="fa fa-square-o fa-lg"></i><i show.bind="$column.filterValue === true" class="fa fa-check-square fa-lg"></i></button>
                 <button click.delegate="$column.clearBooleanFilter()" if.bind="$column.filterValue != undefined" class="btn btn-primary"><i class="fa fa-times-circle fa-lg"></i></button>
@@ -31,21 +33,30 @@
             </th>
           </tr>
         </thead>
+      </table>
+    </div>
+    <div show.bind="!showNoRowsMessage || (showNoRowsMessage &amp;&amp; count &gt; 0)" class="grid-container scrollable">
+      <table class="table table-hover table-bordered table-condensed">
         <tbody>
           <tr role="button" click.delegate="$parent.select($item)"></tr>
         </tbody>
       </table>
     </div>
-    <!-- Footer div-->
-    <div class="grid-footer-container">
-      <pager style="float: left" num-to-show.bind="pagerSize" pager.ref="pager" on-page-changed.call="pageChanged($event)" show-first-last-buttons.bind="showFirstLastButtons" show-jump-buttons.bind="showJumpButtons"></pager>
-      <div style="float: left;margin-left: 20px" class="form-inline">
-        <div class="form-control-group">
-          <select value.bind="pageSize" class="form-control">
-            <option value.bind="size" repeat.for="size of pageSizes">${ size === '*' ? 'All' : size }</option>
-          </select><span>items per page</span>
+  </div>
+  <!-- Footer div-->
+  <div class="container-fluid">
+    <div class="grid-footer-container row">
+      <pager num-to-show.bind="pagerSize" pager.ref="pager" on-page-changed.call="pageChanged($event)" show-first-last-buttons.bind="showFirstLastButtons" show-jump-buttons.bind="showJumpButtons" class="col-sm-8"></pager>
+      <div class="col-sm-4 form-inline">
+        <div class="row">
+          <div class="col-xs-6">
+            <select value.bind="pageSize" class="form-control">
+              <option value.bind="size" repeat.for="size of pageSizes">${ size === '*' ? 'All' : size }</option>
+            </select><span>&nbsp;items per page</span>
+          </div>
+          <div style="padding-top: 6px;" class="col-xs-6"><span class="grid-summary">Showing ${ firstVisibleItem } - ${ lastVisibleItem } of ${ count } items</span></div>
         </div>
-      </div><span class="grid-summary">Showing ${ firstVisibleItem } - ${ lastVisibleItem } of ${ count } items</span>
+      </div>
     </div>
     <!-- No rows message-->
     <div if.bind="showNoRowsMessage &amp;&amp; count === 0" class="alert alert-warning">${ noRowsMessage }</div>

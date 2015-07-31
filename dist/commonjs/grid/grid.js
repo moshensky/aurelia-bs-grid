@@ -264,8 +264,6 @@ var Grid = (function () {
     value: function processUserTemplate() {
       var _this = this;
 
-      console.warn('here a');
-
       var rowElement = this.element.querySelector('grid-row');
       var columnElements = Array.prototype.slice.call(rowElement.querySelectorAll('grid-col'));
 

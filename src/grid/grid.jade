@@ -2,17 +2,17 @@
    Created by moshensky on 7/20/15.
 template
   require(from="../pager/pager")
-  div
-    div.grid-container(show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)")
-      table.table.table-hover.table-striped.table-responsive.selectable(show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)")
+  div.wrapper
+    div.grid-container.header(show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)")
+      table.table.table-hover.selectable(show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)")
         thead
           tr(if.bind="showColumnFilters")
             td(repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }")
               input.form-control(if.bind="$column.showInputFilter", value.bind="$column.filterValue", input.delegate="$column.updateFilters()")
               datepicker(if.bind="$column.showDateFilter", value.two-way="$column.filterValue", change.trigger="$column.updateFilters()")
-              datepicker(if.bind="$column.showDateFromToFilter", value.two-way="$column.filterValueFrom", change.trigger="$column.updateFilters()")
-              br(if.bind="$column.showDateFromToFilter")
-              datepicker(if.bind="$column.showDateFromToFilter", value.two-way="$column.filterValueTo", change.trigger="$column.updateFilters()")
+              div(if.bind="$column.showDateFromToFilter")
+                datepicker(value.two-way="$column.filterValueFrom", change.trigger="$column.updateFilters()")
+                datepicker(value.two-way="$column.filterValueTo", change.trigger="$column.updateFilters()")
               div(if.bind="$column.showBooleanFilter")
                 button.btn.btn-primary(click.delegate="$column.toggleBooleanFilter()")
                   i.fa.fa-square-o.fa-lg(show.bind="$column.filterValue === false || $column.filterValue == undefined")
@@ -20,7 +20,6 @@ template
                 button.btn.btn-primary(click.delegate="$column.clearBooleanFilter()",  if.bind="$column.filterValue != undefined")
                   i.fa.fa-times-circle.fa-lg
               select-two(if.bind="$column.showSelect2Filter", value.two-way="$column.filterValue", caption="${ 'common.choose' | t }", items.bind="$parent.$parent[$column.select2Items]", change.trigger="$column.updateFilters()")
-
           tr(role="button")
             th(repeat.for="$column of columns" class="${ $column.class !== '' ? $column.class : '' }")
               a(if.bind="$column.nosort == false && $parent.sortable", click.trigger="$parent.sortChanged($column.field)") ${ $column.heading }
@@ -29,20 +28,22 @@ template
                 polygon(class="grid-sort-arrow" points="0,0 8,0 4,8")
               svg(if.bind="$parent.sorting[$column.field] === 'asc'" height="8" width="10")
                 polygon(class="grid-sort-arrow" points="0,8 8,8 4,0")
-
+    div.grid-container.scrollable(show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)")
+      table.table.table-hover.table-bordered.table-condensed
         tbody
           tr(role="button", click.delegate="$parent.select($item)")
-
-    // Footer div
-    div.grid-footer-container
-      pager(style="float: left", num-to-show.bind="pagerSize", pager.ref="pager", on-page-changed.call="pageChanged($event)", show-first-last-buttons.bind="showFirstLastButtons", show-jump-buttons.bind="showJumpButtons")
-      div(style="float: left;margin-left: 20px" class="form-inline")
-        div.form-control-group
-          select.form-control(value.bind="pageSize")
-            option(value.bind="size", repeat.for="size of pageSizes") ${ size === '*' ? 'All' : size }
-          span items per page
-      span.grid-summary Showing ${ firstVisibleItem } - ${ lastVisibleItem } of ${ count } items
-
+  // Footer div
+  div.container-fluid
+    div.grid-footer-container.row
+      pager.col-sm-8(num-to-show.bind="pagerSize", pager.ref="pager", on-page-changed.call="pageChanged($event)", show-first-last-buttons.bind="showFirstLastButtons", show-jump-buttons.bind="showJumpButtons")
+      div.col-sm-4.form-inline
+        div.row
+          div.col-xs-6
+            select.form-control(value.bind="pageSize")
+              option(value.bind="size", repeat.for="size of pageSizes") ${ size === '*' ? 'All' : size }
+            span &nbsp;items per page
+          div.col-xs-6(style="padding-top: 6px;")
+            span.grid-summary Showing ${ firstVisibleItem } - ${ lastVisibleItem } of ${ count } items
     // No rows message
     div.alert.alert-warning(if.bind="showNoRowsMessage && count === 0") ${ noRowsMessage }
     div.grid-overlay(if.bind="loading")
