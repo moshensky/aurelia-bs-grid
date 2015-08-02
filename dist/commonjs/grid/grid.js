@@ -626,7 +626,7 @@ var Grid = (function () {
   }, {
     key: 'gridHeightChanged',
     value: function gridHeightChanged() {
-      var cont = this.element.querySelector('.grid-container');
+      var cont = this.element.querySelector('.grid-container.scrollable');
 
       if (this.gridHeight > 0) {
         cont.setAttribute('style', 'height:' + this.gridHeight + 'px');

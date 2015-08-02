@@ -99,27 +99,47 @@ var GridColumn = (function () {
         if (this.filterValueFrom && this.filterValueTo) {
           return [{
             name: this.field + 'From',
-            value: this.filterValueFrom.unix() * 1000
+            value: this.filterValueFrom.unix() * 1000,
+            type: '>',
+            valueType: 'datetime'
           }, {
             name: this.field + 'To',
-            value: this.filterValueTo.unix() * 1000
+            value: this.filterValueTo.unix() * 1000,
+            type: '<',
+            valueType: 'datetime'
           }];
         } else if (this.filterValueFrom) {
           return [{
             name: this.field + 'From',
-            value: this.filterValueFrom.unix() * 1000
+            value: this.filterValueFrom.unix() * 1000,
+            type: '>',
+            valueType: 'datetime'
           }];
         } else if (this.filterValueTo) {
           return [{
             name: this.field + 'To',
-            value: this.filterValueTo.unix() * 1000
+            value: this.filterValueTo.unix() * 1000,
+            type: '<',
+            valueType: 'datetime'
           }];
         }
-      } else if (this.filterValue) {
-        return [{
+      } else if (this.filterValue !== undefined) {
+        var result = [{
           name: this.field,
           value: this.filterValue
         }];
+        if (this.showBooleanFilter) {
+          result[0].type = '=';
+          result[0].valueType = 'boolean';
+        } else if (this.showSelect2Filter) {
+          result[0].type = '=';
+          result[0].valueType = 'int';
+        } else if (this.showInputFilter) {
+          result[0].type = 'like';
+          result[0].valueType = 'string';
+        }
+
+        return result;
       }
 
       return [];
