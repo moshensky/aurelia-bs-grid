@@ -503,7 +503,7 @@ export class Grid {
   gridHeightChanged() {
 
     // TODO: Make this a one off
-    var cont = this.element.querySelector('.grid-container');
+    var cont = this.element.querySelector('.grid-container.scrollable');
 
     if (this.gridHeight > 0) {
       cont.setAttribute('style', 'height:' + this.gridHeight + 'px');

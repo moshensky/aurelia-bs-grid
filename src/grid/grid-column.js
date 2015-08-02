@@ -107,7 +107,7 @@ export class GridColumn {
           valueType: 'datetime'
         }];
       }
-    } else if (this.filterValue) {
+    } else if (this.filterValue !== undefined) {
       let result = [{
         name: this.field,
         value: this.filterValue
