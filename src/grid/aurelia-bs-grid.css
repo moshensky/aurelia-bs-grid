@@ -7,6 +7,7 @@ grid pager .pagination {
 grid .grid-container {
   position: relative;
   border: 1px solid gainsboro;
+  margin-bottom: 20px;
   border-radius: 5px;
 }
 grid .grid-sort-arrow {
@@ -35,85 +36,48 @@ grid .grid-progress-indicator {
 grid .grid-summary {
   text-align: right;
 }
+grid .table {
+  margin-bottom: 0;
+}
+grid .grid-content-container {
+  overflow: auto;
+  width: 100%;
+}
+grid .grid-content-container tr:first-child td {
+  border-top: 0;
+}
 grid .grid-footer-container {
-  padding-bottom: 15px;
+  border-top: 1px solid gainsboro;
+  padding: 8px;
+  overflow: auto;
+}
+grid .grid-footer-container > pager {
+  float: left;
+}
+grid .grid-footer-container > div {
+  float: left;
+  margin-left: 20px;
+}
+grid .grid-footer-container > span {
+  line-height: 34px;
+  float: right;
 }
 grid .progress-bar {
   width: 100%;
 }
-.course {
-  white-space: nowrap;
-}
-.wrapper {
-  overflow-x: auto;
-}
-.grid-container {
-  overflow: hidden;
-  min-width: 1300px;
-}
-.grid-container table.table {
-  table-layout: fixed;
-  border-left: 0;
-  border-right: 0;
-}
-.grid-container table.table thead td,
-.grid-container table.table tbody td,
-.grid-container table.table thead th,
-.grid-container table.table tbody th {
-  width: 20%;
+grid div.grid-container > table > thead > tr > td {
   vertical-align: middle;
 }
-.grid-container table.table thead td .tbl-buttons,
-.grid-container table.table tbody td .tbl-buttons,
-.grid-container table.table thead th .tbl-buttons,
-.grid-container table.table tbody th .tbl-buttons {
-  white-space: nowrap;
+grid table tr td,
+grid table tr th {
+  border-right: 1px solid gainsboro;
+  border-left: 1px solid gainsboro;
 }
-.grid-container table.table thead td:last-child,
-.grid-container table.table tbody td:last-child,
-.grid-container table.table thead th:last-child,
-.grid-container table.table tbody th:last-child {
-  border-right: 0;
-}
-.grid-container table.table thead td:first-child,
-.grid-container table.table tbody td:first-child,
-.grid-container table.table thead th:first-child,
-.grid-container table.table tbody th:first-child {
+grid table tr td:first-child,
+grid table tr th:first-child {
   border-left: 0;
 }
-.grid-container table.table thead td {
-  padding: 3px 8px;
-  background-color: #f3f3f3;
-}
-.scrollable {
-  overflow-y: auto !important;
-  height: 200px;
-  margin-bottom: 20px !important;
-  margin-top: -2px;
-  padding-right: 0 !important;
-}
-.header {
-  border: 0;
-  margin-bottom: 0;
-  padding-right: 21px;
-}
-.header table {
-  border: 0;
-  margin-bottom: 0;
-}
-.header table thead {
-  border: 0;
-}
-.header table thead tr {
-  border: 0;
-}
-.header table thead tr td,
-.header table thead tr th {
-  border: 0;
-}
-.header table thead tr td + td {
-  border-left: 1px solid #ccc;
-}
-.header table thead tr th + th {
-  border-left: 1px solid #ccc;
+grid table tr td:last-child,
+grid table tr th:last-child {
+  border-right: 0;
 }

@@ -542,7 +542,11 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
       value: function refresh() {
         this.dontWatchForChanges();
 
-        if (this.serverPaging || this.serverSorting || this.serverFiltering || !this.initialLoad) this.getData();else this.filterSortPage(this.cache);
+        if (this.serverPaging || this.serverSorting || this.serverFiltering || !this.initialLoad) {
+          this.getData();
+        } else {
+          this.filterSortPage(this.cache);
+        }
       }
     }, {
       key: 'getData',
@@ -619,7 +623,7 @@ define(['exports', 'aurelia-framework', './grid-column', 'gooy/aurelia-compiler'
     }, {
       key: 'gridHeightChanged',
       value: function gridHeightChanged() {
-        var cont = this.element.querySelector('.grid-container.scrollable');
+        var cont = this.element.querySelector('.grid-container');
 
         if (this.gridHeight > 0) {
           cont.setAttribute('style', 'height:' + this.gridHeight + 'px');

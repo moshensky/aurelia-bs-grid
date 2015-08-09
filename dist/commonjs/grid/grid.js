@@ -549,7 +549,11 @@ var Grid = (function () {
     value: function refresh() {
       this.dontWatchForChanges();
 
-      if (this.serverPaging || this.serverSorting || this.serverFiltering || !this.initialLoad) this.getData();else this.filterSortPage(this.cache);
+      if (this.serverPaging || this.serverSorting || this.serverFiltering || !this.initialLoad) {
+        this.getData();
+      } else {
+        this.filterSortPage(this.cache);
+      }
     }
   }, {
     key: 'getData',
@@ -626,7 +630,7 @@ var Grid = (function () {
   }, {
     key: 'gridHeightChanged',
     value: function gridHeightChanged() {
-      var cont = this.element.querySelector('.grid-container.scrollable');
+      var cont = this.element.querySelector('.grid-container');
 
       if (this.gridHeight > 0) {
         cont.setAttribute('style', 'height:' + this.gridHeight + 'px');

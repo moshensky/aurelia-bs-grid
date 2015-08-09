@@ -5,19 +5,17 @@ grid {
       margin: 0;
     }
   }
-
   .grid-container {
     position: relative;
     border: 1px solid gainsboro;
+    margin-bottom: 20px;
     border-radius: 5px;
   }
-
   .grid-sort-arrow {
     fill: gainsboro;
     stroke: gray;
     stroke-width: 1;
   }
-
   .grid-overlay {
     position: absolute;
     left: 0;
@@ -28,7 +26,6 @@ grid {
     z-index: 10;
     background: rgba(0, 0, 0, 0.3);
   }
-
   .grid-progress-indicator {
     position: absolute;
     left: 50%;
@@ -37,92 +34,56 @@ grid {
     transform: translate(-50%, -50%);
     width: 10%;
   }
-
   .grid-summary {
     text-align: right;
   }
-
-  .grid-footer-container {
-    padding-bottom: 15px;
+  .table {
+    margin-bottom: 0;
   }
-
+  .grid-content-container {
+    overflow: auto;
+    width: 100%;
+    tr:first-child {
+      td {
+        border-top: 0;
+      }
+    }
+  }
+  .grid-footer-container {
+    border-top: 1px solid gainsboro;
+    padding: 8px;
+    overflow: auto;
+    & > pager {
+      float: left;
+    }
+    & > div {
+      float: left;
+      margin-left: 20px;
+    }
+    & > span {
+      line-height: 34px;
+      float: right;
+    }
+  }
   .progress-bar {
     width: 100%;
   }
-}
 
-.course {
-  white-space: nowrap;
-}
-
-.wrapper {
-  overflow-x: auto;
-}
-
-.grid-container {
-  overflow: hidden;
-  min-width: 1300px;
-  table.table {
-    table-layout: fixed;
-    border-left: 0;
-    border-right: 0;
-    thead, tbody {
-      td, th {
-        width: 20%;
-        vertical-align: middle;
-        .tbl-buttons {
-          white-space: nowrap;
-        }
-        &:last-child {
-          border-right: 0;
-        }
-        &:first-child {
-          border-left: 0;
-        }
-      }
-    }
-    thead {
-      td {
-        padding: 3px 8px;
-        background-color: #f3f3f3;
-      }
-    }
+  div.grid-container > table > thead > tr > td {
+    vertical-align: middle;
   }
 }
 
-.scrollable {
-  overflow-y: auto !important;
-  height: 200px;
-  margin-bottom: 20px !important;
-  margin-top: -2px;
-  padding-right: 0 !important;
+grid table tr td, grid table tr th {
+  border-right: 1px solid gainsboro;
+  border-left: 1px solid gainsboro;
 }
 
-.header {
-  border: 0;
-  margin-bottom: 0;
-  padding-right: 21px;
-  table {
-    border: 0;
-    margin-bottom: 0;
-
-    thead {
-      border: 0;
-      tr {
-        border: 0;
-        & + tr {
-
-        }
-        td, th {
-          border: 0;
-        }
-        td + td {
-          border-left: 1px solid #ccc;
-        }
-        th + th {
-          border-left: 1px solid #ccc;
-        }
-      }
-    }
-  }
+grid table tr td:first-child, grid table tr th:first-child {
+  border-left: 0;
 }
+
+grid table tr td:last-child, grid table tr th:last-child {
+  border-right: 0;
+}
+

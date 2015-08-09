@@ -408,10 +408,11 @@ export class Grid {
     // If we have any server side stuff we need to get the data first
     this.dontWatchForChanges();
 
-    if (this.serverPaging || this.serverSorting || this.serverFiltering || !this.initialLoad)
+    if (this.serverPaging || this.serverSorting || this.serverFiltering || !this.initialLoad) {
       this.getData();
-    else
+    } else {
       this.filterSortPage(this.cache);
+    }
 
   }
 
@@ -503,7 +504,7 @@ export class Grid {
   gridHeightChanged() {
 
     // TODO: Make this a one off
-    var cont = this.element.querySelector('.grid-container.scrollable');
+    var cont = this.element.querySelector('.grid-container');
 
     if (this.gridHeight > 0) {
       cont.setAttribute('style', 'height:' + this.gridHeight + 'px');
