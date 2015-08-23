@@ -65,6 +65,9 @@ grid .grid-footer-container > span {
 grid .progress-bar {
   width: 100%;
 }
+grid div.grid-container > table > thead > tr > td {
+  vertical-align: middle;
+}
 grid table tr td,
 grid table tr th {
   border-right: 1px solid gainsboro;

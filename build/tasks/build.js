@@ -39,6 +39,7 @@ gulp.task('build-commonjs', ['build-html-commonjs', 'build-css-commonjs'], funct
     .pipe(gulp.dest(paths.output + 'commonjs'));
 });
 
+// amd
 gulp.task('build-css-amd', function () {
   return gulp.src(paths.css)
     .pipe(gulp.dest(paths.output + 'amd'));
@@ -49,12 +50,17 @@ gulp.task('build-html-amd', function () {
     .pipe(gulp.dest(paths.output + 'amd'));
 });
 
-gulp.task('build-amd', ['build-html-amd', 'build-css-amd'], function () {
+gulp.task('build-js-amd', function () {
   return gulp.src(paths.source)
+    .pipe(sourcemaps.init({loadMaps: true}))
     .pipe(to5(assign({}, compilerOptions, {modules:'amd'})))
+    .pipe(sourcemaps.write({includeContent: true}))
     .pipe(gulp.dest(paths.output + 'amd'));
 });
 
+gulp.task('build-amd', ['build-html-amd', 'build-css-amd', 'build-js-amd']);
+
+// system
 gulp.task('build-css-system', function () {
   return gulp.src(paths.css)
     .pipe(gulp.dest(paths.output + 'system'));

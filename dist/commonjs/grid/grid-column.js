@@ -99,28 +99,28 @@ var GridColumn = (function () {
         if (this.filterValueFrom && this.filterValueTo) {
           return [{
             name: this.field + 'From',
-            value: this.filterValueFrom.unix() * 1000,
+            value: this.filterValueFrom.format('YYYY-MM-DD'),
             type: '>',
-            valueType: 'datetime'
+            valueType: 'date'
           }, {
             name: this.field + 'To',
-            value: this.filterValueTo.unix() * 1000,
+            value: this.filterValueTo.format('YYYY-MM-DD'),
             type: '<',
-            valueType: 'datetime'
+            valueType: 'date'
           }];
         } else if (this.filterValueFrom) {
           return [{
             name: this.field + 'From',
-            value: this.filterValueFrom.unix() * 1000,
+            value: this.filterValueFrom.format('YYYY-MM-DD'),
             type: '>',
-            valueType: 'datetime'
+            valueType: 'date'
           }];
         } else if (this.filterValueTo) {
           return [{
             name: this.field + 'To',
-            value: this.filterValueTo.unix() * 1000,
+            value: this.filterValueTo.format('YYYY-MM-DD'),
             type: '<',
-            valueType: 'datetime'
+            valueType: 'date'
           }];
         }
       } else if (this.filterValue !== undefined) {

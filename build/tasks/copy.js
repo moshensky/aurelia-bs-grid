@@ -8,6 +8,6 @@ gulp.task('copy', function() {
   del([paths.bsGridPath], {
     force: true
   }, function (err, deletedFiles) {
-    gulp.src(['dist/system/**/*']).pipe(gulp.dest(paths.bsGridPath));
+    gulp.src(['dist/amd/**/*']).pipe(gulp.dest(paths.bsGridPath));
   });
 });
