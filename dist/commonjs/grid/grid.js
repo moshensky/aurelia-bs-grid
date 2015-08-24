@@ -14,7 +14,7 @@ var _aureliaFramework = require('aurelia-framework');
 
 var _gridColumn = require('./grid-column');
 
-var _gooyAureliaCompiler = require('gooy/aurelia-compiler');
+var _zhhzAureliaCompiler = require('zhhz/aurelia-compiler');
 
 require('./aurelia-bs-grid.css!');
 
@@ -641,8 +641,8 @@ var Grid = (function () {
   }], null, _instanceInitializers);
 
   var _Grid = Grid;
-  Grid = (0, _aureliaFramework.inject)(Element, _gooyAureliaCompiler.Compiler, _aureliaFramework.ObserverLocator)(Grid) || Grid;
-  Grid = (0, _aureliaFramework.skipContentProcessing)()(Grid) || Grid;
+  Grid = (0, _aureliaFramework.inject)(Element, _zhhzAureliaCompiler.Compiler, _aureliaFramework.ObserverLocator)(Grid) || Grid;
+  Grid = (0, _aureliaFramework.processContent)(false)(Grid) || Grid;
   Grid = (0, _aureliaFramework.customElement)('grid')(Grid) || Grid;
   return Grid;
 })();

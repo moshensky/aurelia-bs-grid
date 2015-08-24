@@ -47,6 +47,10 @@
     "directories": {
       "lib": "dist/amd"
     },
-    "dependencies": {}
+    "dependencies": {
+      "babel": "npm:babel-core@^5.8.22",
+      "zhhz/aurelia-compiler": "github:zhhz/aurelia-compiler@^0.0.7"
+    },
+    "devDependencies": {}
   }
 }
