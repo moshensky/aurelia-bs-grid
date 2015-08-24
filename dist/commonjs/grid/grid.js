@@ -14,8 +14,6 @@ var _aureliaFramework = require('aurelia-framework');
 
 var _gridColumn = require('./grid-column');
 
-var _zhhzAureliaCompiler = require('zhhz/aurelia-compiler');
-
 require('./aurelia-bs-grid.css!');
 
 var Grid = (function () {
@@ -183,7 +181,7 @@ var Grid = (function () {
     enumerable: true
   }], null, _instanceInitializers);
 
-  function Grid(element, compiler, observerLocator) {
+  function Grid(element, observerLocator, viewComiler, resources, container) {
     _classCallCheck(this, _Grid);
 
     _defineDecoratedPropertyDescriptor(this, 'gridHeight', _instanceInitializers);
@@ -253,8 +251,10 @@ var Grid = (function () {
     this.scrollBarWidth = 16;
 
     this.element = element;
-    this.compiler = compiler;
     this.observerLocator = observerLocator;
+    this.viewCompiler = viewComiler;
+    this.resources = resources;
+    this.container = container;
 
     this.processUserTemplate();
   }
@@ -286,6 +286,28 @@ var Grid = (function () {
       });
 
       while (this.element.childNodes.length > 0) this.element.removeChild(this.element.childNodes[0]);
+    }
+  }, {
+    key: 'compile',
+    value: function compile(element) {
+      var ctx = arguments.length <= 1 || arguments[1] === undefined ? null : arguments[1];
+      var viewSlot = arguments.length <= 2 || arguments[2] === undefined ? null : arguments[2];
+      var templateOrFragment = arguments.length <= 3 || arguments[3] === undefined ? null : arguments[3];
+
+      element.classList.remove('au-target');
+
+      if (!templateOrFragment) {
+        var templateOrFragment = document.createDocumentFragment();
+        var c = document.createElement('div');
+        c.innerHTML = element.innerHTML;
+        templateOrFragment.appendChild(c);
+      }
+      var view = this.viewCompiler.compile(templateOrFragment, this.resources).create(this.container, ctx);
+
+      if (!viewSlot) viewSlot = new _aureliaFramework.ViewSlot(element, true);
+
+      viewSlot.add(view);
+      viewSlot.attached();
     }
   }, {
     key: 'attached',
@@ -335,7 +357,7 @@ var Grid = (function () {
         rowTemplate.appendChild(td);
       });
 
-      this.compiler.compile(table, this, undefined, fragment);
+      this.compile(table, this, undefined, fragment);
 
       this.noRowsMessageChanged();
     }
@@ -641,7 +663,7 @@ var Grid = (function () {
   }], null, _instanceInitializers);
 
   var _Grid = Grid;
-  Grid = (0, _aureliaFramework.inject)(Element, _zhhzAureliaCompiler.Compiler, _aureliaFramework.ObserverLocator)(Grid) || Grid;
+  Grid = (0, _aureliaFramework.inject)(Element, _aureliaFramework.ObserverLocator, _aureliaFramework.ViewCompiler, _aureliaFramework.ViewResources, _aureliaFramework.Container)(Grid) || Grid;
   Grid = (0, _aureliaFramework.processContent)(false)(Grid) || Grid;
   Grid = (0, _aureliaFramework.customElement)('grid')(Grid) || Grid;
   return Grid;

@@ -78,7 +78,6 @@ export class Grid {
   scrollBarWidth = 16;
 
   constructor(element, observerLocator, viewComiler, resources, container) {
-    debugger;
     this.element = element;
     this.observerLocator = observerLocator;
     this.viewCompiler = viewComiler;
