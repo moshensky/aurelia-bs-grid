@@ -1,13 +1,11 @@
-import {bindable, inject, processContent, ObserverLocator, customElement } from 'aurelia-framework';
+import {bindable, inject, processContent, ObserverLocator, customElement, ViewCompiler, ViewResources, Container, ViewSlot} from 'aurelia-framework';
 import {GridColumn} from './grid-column';
-import {Compiler} from 'zhhz/aurelia-compiler';
 import './aurelia-bs-grid.css!';
 
 @customElement('grid')
 @processContent(false)
-@inject(Element, Compiler, ObserverLocator)
+@inject(Element, ObserverLocator, ViewCompiler, ViewResources, Container)
 export class Grid {
-
   /* == Styling == */
   @bindable gridHeight = 0;
 
@@ -79,10 +77,13 @@ export class Grid {
   // TODO: calc scrollbar width using browser
   scrollBarWidth = 16;
 
-  constructor(element, compiler, observerLocator) {
+  constructor(element, observerLocator, viewComiler, resources, container) {
+    debugger;
     this.element = element;
-    this.compiler = compiler;
     this.observerLocator = observerLocator;
+    this.viewCompiler = viewComiler;
+    this.resources = resources;
+    this.container = container;
 
     // Grab user template from element
     this.processUserTemplate();
@@ -115,6 +116,22 @@ export class Grid {
       this.element.removeChild(this.element.childNodes[0]);
   }
 
+  compile(element, ctx = null,viewSlot = null,templateOrFragment=null) {
+    element.classList.remove('au-target');
+
+    if(!templateOrFragment){
+      var templateOrFragment = document.createDocumentFragment();
+      var c = document.createElement("div");
+      c.innerHTML = element.innerHTML;
+      templateOrFragment.appendChild(c);
+    }
+    var view = this.viewCompiler.compile(templateOrFragment, this.resources).create(this.container, ctx);
+
+    if(!viewSlot) viewSlot = new ViewSlot(element, true);
+
+    viewSlot.add(view);
+    viewSlot.attached();
+  }
 
   /* === Lifecycle === */
   attached() {
@@ -176,7 +193,7 @@ export class Grid {
     });
 
     // Compile
-    this.compiler.compile(table, this, undefined, fragment);
+    this.compile(table, this, undefined, fragment);
 
     // HACK: why is the change handler not firing for noRowsMessage?
     this.noRowsMessageChanged();
