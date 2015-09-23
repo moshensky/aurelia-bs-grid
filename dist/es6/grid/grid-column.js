@@ -11,7 +11,7 @@ export class GridColumn {
       throw new Error('field is required');
 
     this.heading = config.heading || config.field;
-    this.nosort = config.nosort || false;
+    this.nosort = config.nosort !== undefined;
     this.sortDirection = undefined;
 
     this.filterValue = undefined;
@@ -30,6 +30,7 @@ export class GridColumn {
         this[prop] = config[prop];
       }
     }
+
   }
 
   changeDirectionSort() {
