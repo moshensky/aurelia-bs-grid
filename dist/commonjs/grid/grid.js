@@ -336,7 +336,7 @@ var Grid = (function () {
       fragment.appendChild(rowTemplate);
 
       rowTemplate.setAttribute('repeat.for', '$item of data');
-      rowTemplate.setAttribute('class', '${ $item === $parent.selectedItem ? "info" : "" }');
+      rowTemplate.setAttribute('class', '${ $item.className }');
 
       for (var prop in this.rowAttrs) {
         if (this.rowAttrs.hasOwnProperty(prop)) {
