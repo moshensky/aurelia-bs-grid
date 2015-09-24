@@ -1,6 +1,5 @@
 import {bindable, inject, processContent, ObserverLocator, customElement, ViewCompiler, ViewResources, Container, ViewSlot} from 'aurelia-framework';
 import {GridColumn} from './grid-column';
-import './aurelia-bs-grid.css!';
 
 @customElement('grid')
 @processContent(false)

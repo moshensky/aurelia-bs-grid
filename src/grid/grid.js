@@ -1,6 +1,5 @@
 import {bindable, inject, processContent, ObserverLocator, customElement, ViewCompiler, ViewResources, Container, ViewSlot} from 'aurelia-framework';
 import {GridColumn} from './grid-column';
-import './aurelia-bs-grid.css!';
 
 @customElement('grid')
 @processContent(false)
@@ -10,6 +9,7 @@ export class Grid {
   @bindable gridHeight = 0;
 
   /* == Options == */
+
 
   // Initial load flag (for client side)
   @bindable initialLoad = false;

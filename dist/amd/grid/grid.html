@@ -3,6 +3,7 @@
 -->
 <template>
   <require from="../pager/pager"></require>
+  <require from="./aurelia-bs-grid.css"></require>
   <div>
     <div show.bind="!showNoRowsMessage || (showNoRowsMessage &amp;&amp; count &gt; 0)" class="grid-container">
       <table show.bind="!showNoRowsMessage || (showNoRowsMessage &amp;&amp; count &gt; 0)" class="table table-hover table-striped table-responsive selectable">

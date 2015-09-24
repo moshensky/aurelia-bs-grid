@@ -2,6 +2,8 @@
    Created by moshensky on 7/20/15.
 template
   require(from="../pager/pager")
+  require(from="./aurelia-bs-grid.css")
+
   div
     div.grid-container(show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)")
       table.table.table-hover.table-striped.table-responsive.selectable(show.bind="!showNoRowsMessage || (showNoRowsMessage && count > 0)")

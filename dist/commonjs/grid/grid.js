@@ -14,8 +14,6 @@ var _aureliaFramework = require('aurelia-framework');
 
 var _gridColumn = require('./grid-column');
 
-require('./aurelia-bs-grid.css!');
-
 var Grid = (function () {
   var _instanceInitializers = {};
   var _instanceInitializers = {};
