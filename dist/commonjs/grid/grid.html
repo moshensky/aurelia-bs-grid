@@ -46,7 +46,7 @@
         <div class="form-control-group">
           <select value.bind="pageSize" class="form-control">
             <option value.bind="size" repeat.for="size of pageSizes">${ size === '*' ? 'All' : size }</option>
-          </select><span>items per page</span>
+          </select>&nbsp;<span>items per page</span>
         </div>
       </div><span class="grid-summary">Showing ${ firstVisibleItem } - ${ lastVisibleItem } of ${ count } items</span>
     </div>

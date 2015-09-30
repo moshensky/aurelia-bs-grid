@@ -10,6 +10,7 @@ export class Grid {
 
   /* == Options == */
 
+
   // Initial load flag (for client side)
   @bindable initialLoad = false;
 

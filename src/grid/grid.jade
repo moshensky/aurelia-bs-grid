@@ -42,6 +42,7 @@ template
         div.form-control-group
           select.form-control(value.bind="pageSize")
             option(value.bind="size", repeat.for="size of pageSizes") ${ size === '*' ? 'All' : size }
+          | &nbsp;
           span items per page
       span.grid-summary Showing ${ firstVisibleItem } - ${ lastVisibleItem } of ${ count } items
 
