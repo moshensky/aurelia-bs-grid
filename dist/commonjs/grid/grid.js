@@ -296,7 +296,7 @@ var Grid = (function () {
 
       if (!templateOrFragment) {
         var templateOrFragment = document.createDocumentFragment();
-        var c = document.createElement("div");
+        var c = document.createElement('div');
         c.innerHTML = element.innerHTML;
         templateOrFragment.appendChild(c);
       }

@@ -31,6 +31,19 @@ var GridColumn = (function () {
     this.showDateFilter = config['date-filter'] === 'true';
     this.showDateFromToFilter = config['date-filter-from-to'] === 'true';
     this.showBooleanFilter = config['boolean-filter'] === 'true';
+    if (this.showBooleanFilter) {
+      switch (config['filter-value']) {
+        case 'true':
+          this.filterValue = true;
+          break;
+        case 'false':
+          this.filterValue = false;
+          break;
+        default:
+          this.filterValue = undefined;
+      }
+    }
+
     this.showSelect2Filter = config['select2-filter'] === 'true';
     this.select2Items = config['select2-items'];
 
