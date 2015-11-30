@@ -115,6 +115,7 @@ export class Grid {
       this.element.removeChild(this.element.childNodes[0]);
   }
 
+
   compile(element, ctx = null,viewSlot = null,templateOrFragment=null) {
     element.classList.remove('au-target');
 
@@ -124,7 +125,8 @@ export class Grid {
       c.innerHTML = element.innerHTML;
       templateOrFragment.appendChild(c);
     }
-    var view = this.viewCompiler.compile(templateOrFragment, this.resources).create(this.container, ctx);
+    var view = this.viewCompiler.compile(templateOrFragment, this.resources).create(this.container);
+    view.bind(ctx);
 
     if(!viewSlot) viewSlot = new ViewSlot(element, true);
 

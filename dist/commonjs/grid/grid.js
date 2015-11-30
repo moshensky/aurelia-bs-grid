@@ -300,7 +300,8 @@ var Grid = (function () {
         c.innerHTML = element.innerHTML;
         templateOrFragment.appendChild(c);
       }
-      var view = this.viewCompiler.compile(templateOrFragment, this.resources).create(this.container, ctx);
+      var view = this.viewCompiler.compile(templateOrFragment, this.resources).create(this.container);
+      view.bind(ctx);
 
       if (!viewSlot) viewSlot = new _aureliaFramework.ViewSlot(element, true);
 
